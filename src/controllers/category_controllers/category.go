@@ -1,6 +1,8 @@
 package category_controllers
 
 import (
+	"api_tugas_minggu4/src/helper"
+	"api_tugas_minggu4/src/middleware"
 	models "api_tugas_minggu4/src/models/category_models" //Alias tulisan models disamping import
 	"encoding/json"
 	"fmt"
@@ -8,6 +10,8 @@ import (
 )
 
 func Data_categories(w http.ResponseWriter, r *http.Request) {
+	middleware.GetCleanedInput(r)
+	helper.EnableCors(w)
 	if r.Method == "GET" {
 		res, err := json.Marshal(models.SelectAll_category().Value)
 		if err != nil {

@@ -1,6 +1,8 @@
 package products_controllers
 
 import (
+	"api_tugas_minggu4/src/helper"
+	"api_tugas_minggu4/src/middleware"
 	models "api_tugas_minggu4/src/models/products_models" //Alias tulisan models disamping import
 	"encoding/json"
 	"fmt"
@@ -8,6 +10,8 @@ import (
 )
 
 func Data_products(w http.ResponseWriter, r *http.Request) {
+	middleware.GetCleanedInput(r)
+	helper.EnableCors(w)
 	if r.Method == "GET" {
 		res, err := json.Marshal(models.SelectAll_product().Value)
 		if err != nil {
@@ -43,6 +47,9 @@ func Data_products(w http.ResponseWriter, r *http.Request) {
 }
 
 func Data_product(w http.ResponseWriter, r *http.Request) {
+	middleware.GetCleanedInput(r)
+	helper.EnableCors(w)
+	// fmt.Fprintln(w, r.Method)
 	id := r.URL.Path[len("/product/"):]
 
 	if r.Method == "GET" {
@@ -69,7 +76,6 @@ func Data_product(w http.ResponseWriter, r *http.Request) {
 			Size:         updateProduct.Size,
 			Stock:        updateProduct.Stock,
 			Description:  updateProduct.Description,
-			Rating:       updateProduct.Rating,
 			Condition:    updateProduct.Condition,
 		}
 
