@@ -16,13 +16,13 @@ func Router() {
 	})
 
 	http.HandleFunc("/ratings", ratings_controllers.Data_ratings)
-	http.HandleFunc("/rating", ratings_controllers.Data_rating)
+	http.HandleFunc("/rating/", ratings_controllers.Data_rating)
 	http.HandleFunc("/orders", order_controllers.Data_orders)
-	http.HandleFunc("/order", order_controllers.Data_order)
+	http.HandleFunc("/order/", order_controllers.Data_order)
 	http.HandleFunc("/members", members_controller.Data_members)
-	http.HandleFunc("/member", members_controller.Data_member)
+	http.HandleFunc("/member/", members_controller.Data_member)
 	http.HandleFunc("/products", products_controllers.Data_products)
 	http.HandleFunc("/product/", products_controllers.Data_product)
 	http.HandleFunc("/categories", category_controllers.Data_categories)
-	http.HandleFunc("/category", category_controllers.Data_category)
+	http.HandleFunc("/category/", category_controllers.Data_category)
 }

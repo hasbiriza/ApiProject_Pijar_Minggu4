@@ -49,7 +49,7 @@ func Data_orders(w http.ResponseWriter, r *http.Request) {
 func Data_order(w http.ResponseWriter, r *http.Request) {
 	middleware.GetCleanedInput(r)
 	helper.EnableCors(w)
-	id := r.URL.Path[len("/product/"):]
+	id := r.URL.Path[len("/order/"):]
 
 	if r.Method == "GET" {
 		res, err := json.Marshal(models.Select_order(id).Value)

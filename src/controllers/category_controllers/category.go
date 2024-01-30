@@ -47,7 +47,9 @@ func Data_categories(w http.ResponseWriter, r *http.Request) {
 }
 
 func Data_category(w http.ResponseWriter, r *http.Request) {
-	id := r.URL.Path[len("/product/"):]
+	middleware.GetCleanedInput(r)
+	helper.EnableCors(w)
+	id := r.URL.Path[len("/category/"):]
 
 	if r.Method == "GET" {
 		res, err := json.Marshal(models.Select_category(id).Value)
