@@ -19,7 +19,10 @@ func Data_ratings(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
-		w.Write(res)
+		_, err = w.Write(res)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 		return
 	} else if r.Method == "POST" {
 		var product models.Ratings
@@ -49,7 +52,7 @@ func Data_ratings(w http.ResponseWriter, r *http.Request) {
 func Data_rating(w http.ResponseWriter, r *http.Request) {
 	middleware.GetCleanedInput(r)
 	helper.EnableCors(w)
-	id := r.URL.Path[len("/product/"):]
+	id := r.URL.Path[len("/rating/"):]
 
 	if r.Method == "GET" {
 		res, err := json.Marshal(models.Select_rating(id).Value)
