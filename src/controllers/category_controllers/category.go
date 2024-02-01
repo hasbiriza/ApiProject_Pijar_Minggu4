@@ -43,7 +43,11 @@ func Data_categories(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Gagal Konversi Json", http.StatusInternalServerError)
 			return
 		}
-		w.Write(res)
+		_, err = w.Write(res)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
 	} else {
 		http.Error(w, "method tidak diizinkan", http.StatusMethodNotAllowed)
 	}
@@ -60,7 +64,10 @@ func Data_category(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Gagal Konversi Json", http.StatusInternalServerError)
 		}
 		w.Header().Set("Content-Type", "application/json")
-		w.Write(res)
+		_, err = w.Write(res)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 		return
 	} else if r.Method == "PUT" {
 		var updateProduct models.Category
@@ -82,9 +89,12 @@ func Data_category(w http.ResponseWriter, r *http.Request) {
 		res, err := json.Marshal(msg)
 		if err != nil {
 			http.Error(w, "Gagal Konversi Json", http.StatusInternalServerError)
-			return
 		}
-		w.Write(res)
+		_, err = w.Write(res)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
 	} else if r.Method == "DELETE" {
 		models.Deletes_category(id)
 		msg := map[string]string{
@@ -93,9 +103,12 @@ func Data_category(w http.ResponseWriter, r *http.Request) {
 		res, err := json.Marshal(msg)
 		if err != nil {
 			http.Error(w, "Gagal Konversi Json", http.StatusInternalServerError)
-			return
 		}
-		w.Write(res)
+		_, err = w.Write(res)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
 	} else {
 		http.Error(w, "method tidak diizinkan", http.StatusMethodNotAllowed)
 	}

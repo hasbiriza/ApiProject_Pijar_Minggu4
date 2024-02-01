@@ -43,7 +43,11 @@ func Data_orders(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Gagal Konversi Json", http.StatusInternalServerError)
 			return
 		}
-		w.Write(res)
+		_, err = w.Write(res) // Perubahan disini
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
 	} else {
 		http.Error(w, "method tidak diizinkan", http.StatusMethodNotAllowed)
 	}
@@ -58,9 +62,13 @@ func Data_order(w http.ResponseWriter, r *http.Request) {
 		res, err := json.Marshal(models.Select_order(id).Value)
 		if err != nil {
 			http.Error(w, "Gagal Konversi Json", http.StatusInternalServerError)
+			return
 		}
 		w.Header().Set("Content-Type", "application/json")
-		w.Write(res)
+		_, err = w.Write(res) // Perubahan disini
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 		return
 	} else if r.Method == "PUT" {
 		var updateProduct models.Orders
@@ -88,7 +96,11 @@ func Data_order(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Gagal Konversi Json", http.StatusInternalServerError)
 			return
 		}
-		w.Write(res)
+		_, err = w.Write(res) // Perubahan disini
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
 	} else if r.Method == "DELETE" {
 		models.Deletes_order(id)
 		msg := map[string]string{
@@ -99,7 +111,11 @@ func Data_order(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Gagal Konversi Json", http.StatusInternalServerError)
 			return
 		}
-		w.Write(res)
+		_, err = w.Write(res) // Perubahan disini
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
 	} else {
 		http.Error(w, "method tidak diizinkan", http.StatusMethodNotAllowed)
 	}

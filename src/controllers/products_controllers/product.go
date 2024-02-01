@@ -19,7 +19,10 @@ func Data_products(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
-		w.Write(res)
+		_, err = w.Write(res) // Perubahan disini
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 		return
 	} else if r.Method == "POST" {
 		var product models.Products
@@ -40,7 +43,11 @@ func Data_products(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Gagal Konversi Json", http.StatusInternalServerError)
 			return
 		}
-		w.Write(res)
+		_, err = w.Write(res) // Perubahan disini
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
 	} else {
 		http.Error(w, "method tidak diizinkan", http.StatusMethodNotAllowed)
 	}
@@ -49,7 +56,6 @@ func Data_products(w http.ResponseWriter, r *http.Request) {
 func Data_product(w http.ResponseWriter, r *http.Request) {
 	middleware.GetCleanedInput(r)
 	helper.EnableCors(w)
-	// fmt.Fprintln(w, r.Method)
 	id := r.URL.Path[len("/product/"):]
 
 	if r.Method == "GET" {
@@ -58,7 +64,10 @@ func Data_product(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Gagal Konversi Json", http.StatusInternalServerError)
 		}
 		w.Header().Set("Content-Type", "application/json")
-		w.Write(res)
+		_, err = w.Write(res) // Perubahan disini
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 		return
 	} else if r.Method == "PUT" {
 		var updateProduct models.Products
@@ -88,7 +97,11 @@ func Data_product(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Gagal Konversi Json", http.StatusInternalServerError)
 			return
 		}
-		w.Write(res)
+		_, err = w.Write(res) // Perubahan disini
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
 	} else if r.Method == "DELETE" {
 		models.Delete_products(id)
 		msg := map[string]string{
@@ -99,7 +112,11 @@ func Data_product(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Gagal Konversi Json", http.StatusInternalServerError)
 			return
 		}
-		w.Write(res)
+		_, err = w.Write(res) // Perubahan disini
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
 	} else {
 		http.Error(w, "method tidak diizinkan", http.StatusMethodNotAllowed)
 	}

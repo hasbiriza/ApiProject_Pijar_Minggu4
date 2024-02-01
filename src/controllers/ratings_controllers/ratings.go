@@ -43,7 +43,11 @@ func Data_ratings(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Gagal Konversi Json", http.StatusInternalServerError)
 			return
 		}
-		w.Write(res)
+		_, err = w.Write(res) // Perubahan disini
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
 	} else {
 		http.Error(w, "method tidak diizinkan", http.StatusMethodNotAllowed)
 	}
@@ -58,9 +62,13 @@ func Data_rating(w http.ResponseWriter, r *http.Request) {
 		res, err := json.Marshal(models.Select_rating(id).Value)
 		if err != nil {
 			http.Error(w, "Gagal Konversi Json", http.StatusInternalServerError)
+			return
 		}
 		w.Header().Set("Content-Type", "application/json")
-		w.Write(res)
+		_, err = w.Write(res) // Perubahan disini
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 		return
 	} else if r.Method == "PUT" {
 		var updateProduct models.Ratings
@@ -86,7 +94,11 @@ func Data_rating(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Gagal Konversi Json", http.StatusInternalServerError)
 			return
 		}
-		w.Write(res)
+		_, err = w.Write(res) // Perubahan disini
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
 	} else if r.Method == "DELETE" {
 		models.Delete_rating(id)
 		msg := map[string]string{
@@ -97,7 +109,11 @@ func Data_rating(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Gagal Konversi Json", http.StatusInternalServerError)
 			return
 		}
-		w.Write(res)
+		_, err = w.Write(res) // Perubahan disini
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
 	} else {
 		http.Error(w, "method tidak diizinkan", http.StatusMethodNotAllowed)
 	}
