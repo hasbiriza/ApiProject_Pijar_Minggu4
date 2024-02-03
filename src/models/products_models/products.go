@@ -14,10 +14,27 @@ type Products struct {
 	Size         string
 	Stock        int
 	Description  string
-	Rating       int
 	Condition    string
 }
 
+func FindData(name string) *gorm.DB {
+	items := []Products{}
+	name = "%" + name + "%"
+	return config.DB.Where("name Like?", name).Find(&items)
+}
+
+func FindCond(sort string, limit int, offset int) *gorm.DB {
+	items := Products{}
+	return config.DB.Order(sort).Limit(limit).Offset(offset).Find(&items)
+}
+
+func CountData() int {
+	var result int
+	config.DB.Table("products").Count(&result)
+	return result
+}
+
+// ///CRUD//////////////////
 func SelectAll_product() *gorm.DB {
 	items := []Products{}
 	return config.DB.Find(&items)

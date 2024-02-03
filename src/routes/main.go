@@ -20,16 +20,26 @@ func Router() {
 		fmt.Fprintln(w, "Hello World ,Ini Adalah Halaman paling awal ya")
 	})
 
-	// http.Handle("/costumers", helmet.Secure(middleware.XssMiddleware(http.HandlerFunc(coscontrol.Costumers))))
-
+	//Rating Section//
 	http.Handle("/ratings", helmet.Secure(middleware.XssMiddleware(http.HandlerFunc(ratings_controllers.Data_ratings))))
 	http.Handle("/rating/", helmet.Secure(middleware.XssMiddleware(http.HandlerFunc(ratings_controllers.Data_rating))))
+
+	//Order Section//
 	http.Handle("/orders/", helmet.Secure(middleware.XssMiddleware(http.HandlerFunc(order_controllers.Data_orders))))
 	http.Handle("/order/", helmet.Secure(middleware.XssMiddleware(http.HandlerFunc(order_controllers.Data_order))))
+
+	//MemberSection//
 	http.Handle("/members", helmet.Secure(middleware.XssMiddleware(http.HandlerFunc(members_controller.Data_members))))
 	http.Handle("/member/", helmet.Secure(middleware.XssMiddleware(http.HandlerFunc(members_controller.Data_member))))
-	http.Handle("/products/", helmet.Secure(middleware.XssMiddleware(http.HandlerFunc(products_controllers.Data_products))))
+	/*Login and Register*/
+	http.Handle("/login", helmet.Secure(middleware.XssMiddleware(http.HandlerFunc(members_controller.Login))))
+	http.Handle("/register_member", helmet.Secure(middleware.XssMiddleware(http.HandlerFunc(members_controller.RegisterMember))))
+
+	//ProductSection//
+	http.Handle("/products/", middleware.JwtMiddleware(helmet.Secure(middleware.XssMiddleware(http.HandlerFunc(products_controllers.Data_products)))))
 	http.Handle("/product/", helmet.Secure(middleware.XssMiddleware(http.HandlerFunc(products_controllers.Data_product))))
+
+	//CategorySection//
 	http.Handle("/categories", helmet.Secure(middleware.XssMiddleware(http.HandlerFunc(category_controllers.Data_categories))))
 	http.Handle("/category/", helmet.Secure(middleware.XssMiddleware(http.HandlerFunc(category_controllers.Data_category))))
 

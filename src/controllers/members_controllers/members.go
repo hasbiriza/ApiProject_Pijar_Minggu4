@@ -7,7 +7,80 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
+
+	"golang.org/x/crypto/bcrypt"
 )
+
+// ////////////////////////////////////////////////////Register&Login////////////////////////////////////
+func RegisterMember(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		var input models.Member
+		err := json.NewDecoder(r.Body).Decode(&input)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			fmt.Fprintln(w, "Invalid Request Body")
+			return
+		}
+		hashPassword, _ := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.DefaultCost)
+		Password := string(hashPassword)
+		newMember := models.Member{
+			Member_name: input.Member_name,
+			Email:       input.Email,
+			Password:    Password,
+			Role:        input.Role,
+			Address:     input.Address,
+			Phone:       input.Phone,
+		}
+		res := models.CreateMember(&newMember)
+		var _, _ = json.Marshal(res)
+		w.WriteHeader(http.StatusCreated)
+		fmt.Fprintln(w, "Register Succesful")
+	} else {
+		http.Error(w, "", http.StatusBadRequest)
+	}
+}
+
+func Login(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		var input models.Member
+		err := json.NewDecoder(r.Body).Decode(&input)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			fmt.Fprintln(w, "invalid request body")
+			return
+		}
+		ValidateEmail := models.FindEmail(&input)
+		if len(ValidateEmail) == 0 {
+			w.WriteHeader(http.StatusNotFound)
+			fmt.Fprintln(w, "Email is not Found")
+			return
+		}
+		var passwordSecond string
+		for _, member := range ValidateEmail {
+			passwordSecond = member.Password
+		}
+		if err := bcrypt.CompareHashAndPassword([]byte(passwordSecond), []byte(input.Password)); err != nil {
+			w.WriteHeader(http.StatusNotFound)
+			fmt.Fprintf(w, "Password not Found")
+			return
+		}
+		jwtKey := os.Getenv("SECRETKEY")
+		token, _ := helper.GenerateToken(jwtKey, input.Email)
+		item := map[string]string{
+			"Email": input.Email,
+			"Token": token,
+		}
+		res, _ := json.Marshal(item)
+		w.WriteHeader(http.StatusOK)
+		w.Write(res)
+		return
+	} else {
+		http.Error(w, "", http.StatusBadRequest)
+	}
+}
+
+//////////////////////////////////////////////////CRUD////////////////////////////////////////////
 
 func Data_members(w http.ResponseWriter, r *http.Request) {
 	middleware.GetCleanedInput(r)
