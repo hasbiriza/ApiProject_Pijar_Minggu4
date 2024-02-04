@@ -90,6 +90,7 @@ func Handle_upload(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// /Search Product
 func SearchProduct(w http.ResponseWriter, r *http.Request) {
 	keyword := r.URL.Query().Get("search")
 	res, err := json.Marshal(models.FindData(keyword).Value)
@@ -102,6 +103,7 @@ func SearchProduct(w http.ResponseWriter, r *http.Request) {
 }
 
 // ////////////////////CRUD PRODUCTS//////////////////////////////////////////////
+
 func Data_products(w http.ResponseWriter, r *http.Request) {
 	middleware.GetCleanedInput(r)
 	helper.EnableCors(w)

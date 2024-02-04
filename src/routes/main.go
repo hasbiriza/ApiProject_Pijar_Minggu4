@@ -39,6 +39,10 @@ func Router() {
 	http.Handle("/products/", middleware.JwtMiddleware(helmet.Secure(middleware.XssMiddleware(http.HandlerFunc(products_controllers.Data_products)))))
 	http.Handle("/product/", helmet.Secure(middleware.XssMiddleware(http.HandlerFunc(products_controllers.Data_product))))
 
+	/*Pagination , Upload Product , Search Produck */
+	http.Handle("/search", http.HandlerFunc(products_controllers.SearchProduct))
+	http.Handle("/upload", http.HandlerFunc(products_controllers.Handle_upload))
+
 	//CategorySection//
 	http.Handle("/categories", helmet.Secure(middleware.XssMiddleware(http.HandlerFunc(category_controllers.Data_categories))))
 	http.Handle("/category/", helmet.Secure(middleware.XssMiddleware(http.HandlerFunc(category_controllers.Data_category))))
